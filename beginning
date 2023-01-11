@@ -1,0 +1,73 @@
+Выполняем каждую команду отдельно:
+
+apt update
+apt upgrade
+apt install curl git -y
+curl — proto ‘=https’ — tlsv1.2 -sSf https://sh.rustup.rs | sh 
+Нажимаем 1
+
+source "$HOME/.cargo/env"
+curl — proto ‘=https’ — tlsv1.2 -sSf https://fuellabs.github.io/fuelup/fuelup-init.sh | sh
+Нажимаем N
+
+export PATH="${HOME}/.fuelup/bin:${PATH}"
+mkdir fuel-project
+cd fuel-project
+forc new counter-contract
+Далее выполняем пару шагов, если есть желание проделать это в командной строке. Либо можете заменить контракт (стерев старый) используя Mobaxterm (для Windows) либо FileZilla (для Mac) 
+
+vim counter-contract/src/main.sw
+(Если ничего не произошло то вводим sudo apt install vim, после чего повторяем vim counter-contract/src/main.sw)
+
+Открылся редактор кода. Нажимаем клавишу i и теперь можем удалить код, который там есть. Переходим на сайт и копируем код контракта 
+
+
+Этот код надо скопировать и вставить в терминал
+
+
+Вставляем код в терминал, жмем Esc, вводим :w и жмем Enter, потом :q и жмем Enter. (Если выскакивают ошибки, значит не правильно вставили код или потеряли скобку)
+
+Продолжаем писать строки кода:
+
+fuelup toolchain new test_toolchain
+fuelup component add forc@0.26.0
+fuelup component add forc-wallet
+cd counter-contract
+forc build
+forc-wallet init
+Придумываем пароль и сохраняем мнемоник (сид-фразу) нажимаем Enter
+
+forc-wallet new
+Копируем адрес кошелька и идем в кран за тестовыми токенами и продолжаем
+
+forc deploy --url https://node-beta-1.fuel.network/graphql --gas-price 1
+Вставляем адрес кошелька (который ранее сохранили), жмем Enter, получаем Tx id to sign
+
+Далее, не закрывая текущий терминал (окно с командной строкой), открываем еще один и подключаемся к этому же хосту
+
+И пишем несколько команд
+
+cd fuel-project
+cd counter-contract
+export PATH="${HOME}/.fuelup/bin:${PATH}"
+forc wallet sign "Tx id to sign из первого окна" 0
+Копируем сигнатуру (полученный результат), возвращаемся в первый терминал и вставляем ее там
+
+
+Если из первого терминала вас выкинуло, введите в нем следующие команды что бы вернуться к нужному шагу 
+
+cd fuel-project
+
+cd counter-contract
+
+export PATH="${HOME}/.fuelup/bin:${PATH}"
+
+
+
+Теперь нам выдадут TransactionId, копируем его
+
+Вначале вставляем 0x и идем в эксплорер проверять наш контракт.
+
+
+
+На этом все!
